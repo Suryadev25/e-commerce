@@ -1,0 +1,29 @@
+ {% extends "base.html" %}
+ {% load static %}
+ <title>
+  {% block title %}
+  Medicines
+  {% endblock title %}
+ </title>
+{% block body %}
+<div class="container-md-4">
+  <div class="row">
+    <h2 class="display-4 text-center text-success">Medicines</h2>
+    <hr>
+    {% for i in mymed %}
+      <div class="col-md-4 col-sm-6 p-5 bg-light">
+        <div class="card" style="width: 18rem;">
+          <img src="{{i.medicine_image.url}}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">{{i.medicine_name}}</h5>
+            <p class="card-text">{{i.medicine_descripton}}</p>
+            <p class="text-success">Price: Rs.{{i.medicine_price}}</p>
+            <p class="text-danger">Exp Date: {{i.medicine_exp}}</p>
+            <a href="/orders" class="btn btn-primary">Buy Now</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock body %}

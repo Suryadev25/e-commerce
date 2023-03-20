@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}
+Order-Products/Medicines
+{% endblock title %}
+{% block body %}
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="container mt-3">
+      <h2 class="display-4">Fill Details</h2>
+      {% include "messages.html" %}
+      <div class="card bg-light p-3 ">
+        <div class="card-body">
+
+
+          <form action="orders" method="post">
+            {% csrf_token %}
+            <div class="from-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" class="form-control mb-3"
+                value="{{user.first_name}} {{user.last_name}}" required>
+            </div>
+
+            <div class="from-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" class="form-control mb-3" value="{{user.username}}" required>
+            </div>
+
+            <div class="from-group">
+              <label for="items">Select Product</label>
+              <select name="items" class="form-control mb-3" id="items">
+                <option selected="choose">Choose..</option>
+                {% for i in myprod %}
+                <option value="{{i.prod_name}}">{{i.prod_name}}</option>
+                {% endfor %}
+                {% for j in mymed %}
+                <option value="{{j.medicine_name}}">{{j.medicine_name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="quantity">Quantity?</label>
+              <select name="quantity" class="form-control mb-3" id="quantity">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="num">Phone Number</label>
+              <input type="tel" class="form-control mb-3" name="num" id="num" pattern="[0-9]{10}" required>
+            </div>
+
+            <div class="form-group">
+              <label for="address">Delivery Address</label>
+              <textarea  type="text" name="address" class="form-control mb-3" id = "address"  required>
+                </textarea>
+            </div>
+
+            <div class="form-group">
+              <input type="checkbox" class="form-check-input" name="agree" id="agree">
+              <label for="form-check-input "> I Accept Cash On Delivery</label>
+            </div>
+
+            <br>
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-dark">Place Order</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="container mt-2">
+      <h2 class="display-4">Orders</h2>
+      <table class="table table-bordered table-danger table-hover">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Name</th>
+            <th>Products</th>
+            <th>Price</th>
+            <th>Cancel</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for i in items %}
+          <tr>
+            <th>{{i.id}}</th>
+            <td>{{i.name}}</th>
+            <td>{{i.items}}</td>
+            <td><i class="fa-solid fa-indian-rupee-sign"></i> {{i.price}}</td>
+
+            {% if i.delivery %}
+            <td><a type="button" class="btn-success p-2" href="/orders/{{i.id}}"><i
+                  class="fa-solid fa-trash-can"></i></a></td>
+            {% else %}
+            <td><a type="button" class="btn-danger p-2" href="/orders/{{i.id}}"><i
+                  class="fa-solid fa-trash-can"></i></a></td>
+            {% endif %}
+
+            {% if i.delivery %}
+            <td><i class="fa-solid fa-circle-check"></i> Delivered</td>
+            {% else %}
+            <td><i class="fa-solid fa-truck"></i> Not Delivered</td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock body %}
